@@ -22,7 +22,7 @@ class ClienteController extends Controller
     public function index()
     {
         $resultado = $this->service->index();
-        return response()->json(compact('resultado'));
+        return response()->json(compact('resultado'),$resultado['code']);
     }
 
     /**
@@ -33,7 +33,8 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $resultado = $this->service->store($request);
+        return response()->json(compact('resultado'),$resultado['code']);
     }
 
     /**
@@ -44,19 +45,8 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        $resultado = $this->service->show($id);
+        return response()->json(compact('resultado'),$resultado['code']);
     }
 
     /**
@@ -67,6 +57,7 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $resultado = $this->service->destroy($id);
+        return response()->json(compact('resultado'),$resultado['code']);
     }
 }

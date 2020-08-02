@@ -2,17 +2,25 @@
 
 namespace App\Repositories;
 
-use App\Cliente;
 use App\Repositories\Contracts\ClienteInterface;
-use Illuminate\Database\QueryException;
+use App\Exceptions\AppExceptionTrait;
+use Illuminate\Support\Facades\Validator;
+use App\Cliente;
+use Exception;
 
 class ClienteRepository implements ClienteInterface
 {
-    private $cliente;
+    use AppExceptionTrait;
 
-    public function __construct(Cliente $cliente)
-    {
+    private $cliente;
+    private $validator;
+
+    public function __construct(
+        Cliente $cliente,
+        Validator $validator
+    ) {
         $this->cliente = $cliente;
+        $this->validator = $validator;
     }
 
     public function all()
@@ -20,18 +28,70 @@ class ClienteRepository implements ClienteInterface
         try {
             $cliente = $this->cliente->all();
 
-            return ['cod' => 200, 'cliente' => $cliente];
-        } catch (QueryException $qe) {
-            return  ['cod_erro' => 500, 'message' => $qe->getMessage()];
+            return [
+                'code' => 200,
+                'success' => true,
+                'data' => $cliente
+            ];
+        } catch (Exception $exception) {
+            return $this->getException($exception);
         }
     }
-    public function storeOrUpdate()
+    public function storeOrUpdate($request)
     {
+        try {
+            $cliente = $this->cliente->updateOrCreate(
+                [
+                    'id_cliente' => $request->id_cliente
+                ],
+                [
+                    'nm_cliente' => $request->nm_cliente,
+                    'nm_email' => $request->nm_email,
+                    'nm_telefone' => $request->nm_telefone,
+                    'nm_endereco' => $request->nm_endereco
+                ]
+            );
+
+            return [
+                'success' => true,
+                'code' => 200,
+                'data' => $cliente
+            ];
+        } catch (Exception $exception) {
+            return $this->getException($exception);
+        }
     }
-    public function show()
+    public function show($id)
     {
+        try {
+            $cliente = $this->cliente->findOrFail($id);
+
+            return [
+                'success' => true,
+                'code' => 200,
+                'data' => $cliente
+            ];
+        } catch (Exception $exception) {
+            return $this->getException($exception);
+        }
     }
-    public function destroy()
+    public function destroy($cliente)
     {
+        try {
+            $cliente->delete();
+
+            return [
+                'success' => true,
+                'code' => 200,
+                'data' => $cliente
+            ];
+        } catch (Exception $exception) {
+            return $this->getException($exception);
+        }
+    }
+
+    public function validateForm($request)
+    {
+        return $this->validator::make($request->all(), Cliente::rules(), Cliente::messages());
     }
 }

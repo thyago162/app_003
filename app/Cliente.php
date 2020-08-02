@@ -6,26 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cliente extends Model
 {
+    protected $primaryKey = 'id_cliente';
+    public $timestamps = false;
+    protected $fillable = [
+        'nm_cliente', 'nm_email', 'nm_telefone', 'nm_endereco'
+    ];
+
     public function pedido()
     {
         $this->hasMany('App\Pedido');
     }
 
-    protected $fillable = [
-        'nm_cliente', 'nm_email', 'nm_telefone', 'fk_endereco'
-    ];
-
-    protected function rules()
+    protected static function rules()
     {
         return [
-            'nm_cliente' => 'required|string|max:3|max:100',
-            'nm_email' => 'required|nm_email|max:100',
+            'nm_cliente' => 'required|string|min:3|max:100',
+            'nm_email' => 'required|email|max:100',
             'nm_telefone' => 'required|max:11',
             'nm_endereco' => 'required|max:255'
         ];
     }
 
-    protected function messages()
+    protected static function messages()
     {
         return [
             'nm_cliente.required' => 'O campo NOME é obrigatório',
