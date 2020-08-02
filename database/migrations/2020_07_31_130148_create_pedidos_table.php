@@ -14,8 +14,11 @@ class CreatePedidosTable extends Migration
     public function up()
     {
         Schema::create('pedidos', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id('id_pedido');
+            $table->unsignedBigInteger('id_cliente');
+            $table->unsignedBigInteger('id_produto');
+            $table->date('dt_criacao');
+            $table->string('nm_status_pedido');
         });
     }
 

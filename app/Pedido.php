@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pedido extends Model
 {
+    public function cliente()
+    {
+        $this->hasOne('App\Cliente');
+    }
+
     protected $fillable = [
-        'id_cliente', 'id_produto', 'data_criacao', 'status_pedido'
+        'id_cliente', 'id_produto', 'dt_criacao', 'nm_status_pedido'
     ];
 }

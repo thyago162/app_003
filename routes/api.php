@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['namespace' => 'App\Adm'], function () {
+    Route::resource('produtos', 'ProdutoController', ['except' => ['edit']]);
+    Route::resource('pedidos', 'PedidoController', ['except' => ['edit']]);
+});
+
+Route::group(['namespace' => 'App\Cliente'], function () {
+    Route::resource('clientes', 'ClienteController', ['except' => ['edit']]);
 });
