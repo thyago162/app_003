@@ -17,6 +17,14 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Contracts\ClienteInterface', 
             'App\Repositories\ClienteRepository'
         );
+        $this->app->bind(
+            'App\Repositories\Contracts\PedidoInterface', 
+            'App\Repositories\PedidoRepository'
+        );
+        $this->app->bind(
+            'App\Repositories\Contracts\ProdutoInterface', 
+            'App\Repositories\ProdutoRepository'
+        );
     }
 
     /**

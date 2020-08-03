@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::redirect('/', '/home', 301);
+Route::get('/home', function() {
+    return view('app');
 });
+
+Route::get('/{vue_capture?}', function () {
+    return view('main');
+})->where('vue_capture', '[\/\w\.-]*');

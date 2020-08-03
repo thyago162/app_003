@@ -10,12 +10,12 @@ class Produto extends Model
         'nm_produto', 'nu_preco'
     ];
 
-    protected function rules()
+    protected static function rules()
     {
         return [];
     }
 
-    protected function messages()
+    protected static function messages()
     {
         return [];
     }
